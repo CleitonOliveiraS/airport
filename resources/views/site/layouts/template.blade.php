@@ -12,7 +12,7 @@
         <link href="{{url('assets/site/css/style.css')}}" rel="stylesheet">
 
         <!--Responsive-->
-        <link rel="stylesheet" href="{{url('css/responsive.css')}}">
+        <link rel="stylesheet" href="{{url('assets/site/css/responsive.css')}}">
 
         <!--Resets-->
         <link href="{{url('assets/site/css/reset.css')}}" rel="stylesheet">
@@ -42,7 +42,7 @@
                             <a class="nav-link" href="?pg=home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="?pg=promocoes">Promoções</a>
+                            <a class="nav-link" href="{{route('promotions')}}">Promoções</a>
                         </li>
                     </ul>
                 </div><!--collapse-->

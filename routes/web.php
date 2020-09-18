@@ -2,7 +2,5 @@
 
 Route::get('panel', 'Panel\PanelController@index');
 
-Route::get('/', function () {
-    return view('welcome');
-    
-});
+Route::get('/', 'Site\SiteController@index');
+Route::get('promocoes', 'Site\SiteController@promotions')->name('promotions');

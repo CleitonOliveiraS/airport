@@ -1,6 +1,9 @@
 <?php
 
-Route::get('panel', 'Panel\PanelController@index');
+Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function(){
+    Route::get('/', 'PanelController@index')->name('panel');
+    Route::resource('/brands', 'BrandController');
+});
 
 Route::get('/', 'Site\SiteController@index');
 Route::get('promocoes', 'Site\SiteController@promotions')->name('promotions');

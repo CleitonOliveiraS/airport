@@ -8,15 +8,17 @@ use App\Models\Brand;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Brand $brand)
+    private $brand;
+    
+    public function __construct(Brand $brand)
+    {
+        $this->brand = $brand;
+    }
+
+    public function index()
     {
         $title = 'Marcas de Aviões';
-        $brand = $brand->all();
+        $brands = $this->brand->all();
         return view('panel.brands.index', compact('title', 'brands'));
     }
 
@@ -31,15 +33,21 @@ class BrandController extends Controller
         return view('panel.brands.create', compact('title'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        Brand::create($request->all());
+        if($request->name == null or $request->name == ''){
+            return redirect()->back()->with('error', 'Falha ao cadastrar!');
+        }
+        $dataForm = $request->all();
+
+        $insert = $this->brand->create($dataForm);
+
+        if($insert){
+            return redirect()->route('brands.index')->with('success', 'Cadastro realizado com sucesso!');
+        }else{
+            return redirect()->back()->with('error', 'Falha ao cadastrar!');
+        }
+
     }
 
     /**
@@ -61,7 +69,12 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
-        //
+        $brand = $this->brand->find($id);
+        if(!$brand){
+            return redirect()->back();
+        }
+        $title = "Editar Marca: {brand->name}";
+        return view('panel.brands.edit', compact('title', 'brand'));
     }
 
     /**
@@ -73,7 +86,18 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $brand = $this->brand->find($id);
+        if(!$brand){
+            return redirect()->back();
+        }
+
+        $update = $brand->update($request->all());
+
+        if($update){
+            return redirect()->route('brands.index')->with('success', 'Edição realizada com sucesso!');
+        }else{
+            return redirect()->back()->with('error', 'Falha ao cadastrar!');
+        }
     }
 
     /**

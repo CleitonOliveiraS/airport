@@ -11,6 +11,7 @@ use App\Models\Brand;
 class BrandController extends Controller
 {
     private $brand;
+    protected $totalPage = 4;
     
     public function __construct(Brand $brand)
     {
@@ -20,7 +21,7 @@ class BrandController extends Controller
     public function index()
     {
         $title = 'Marcas de Aviões';
-        $brands = $this->brand->all();
+        $brands = $this->brand->paginate($this->totalPage);
         return view('panel.brands.index', compact('title', 'brands'));
     }
 
@@ -108,5 +109,11 @@ class BrandController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(Request $request){
+        $brands = $this->brand->search($request->key_search, $this->totalPage);
+        $title = "Brands, filtros para: {$request->key_search}";
+        return view('panel.brands.index', compact('title', 'brands'));
     }
 }

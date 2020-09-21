@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Panel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BrandStoreUpdateFormRequest;
 use App\Models\Brand;
+
 
 class BrandController extends Controller
 {
@@ -33,11 +35,8 @@ class BrandController extends Controller
         return view('panel.brands.create', compact('title'));
     }
 
-    public function store(Request $request)
+    public function store(BrandStoreUpdateFormRequest $request)
     {
-        if($request->name == null or $request->name == ''){
-            return redirect()->back()->with('error', 'Falha ao cadastrar!');
-        }
         $dataForm = $request->all();
 
         $insert = $this->brand->create($dataForm);

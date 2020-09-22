@@ -41,9 +41,9 @@
 			</li>
 
 			<li>
-				<a href="?pag=forms">
-					<i class="fa fa-fort-awesome" aria-hidden="true"></i>
-					Forms
+				<a href="{{route('planes.index')}}">
+					<i class="fa fa-plane" aria-hidden="true"></i>
+					Aviões
 				</a>
 			</li>
 		</ul>

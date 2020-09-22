@@ -33,7 +33,7 @@
         <div class="form-group">
             <button class="btn btn-search">Cadastrar</button>
         </div>
-        {{Form:close()}}
+        {{Form::close()}}
     </div>
     <!--Content Dinâmico-->
 @endsection

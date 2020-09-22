@@ -17,16 +17,7 @@
     </div>
 
     <div class="messages">
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{session('success')}}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-error">
-                {{session('error')}}
-            </div>
-        @endif
+       @include('panel.includes.alerts')
     </div>
 
     <div class="class-btn-insert">
@@ -39,15 +30,15 @@
     <table class="table table-striped">
         <tr>
             <th>Nome</th>
-            <th width="150">Ações</th>
+            <th width="200">Ações</th>
         </tr>
 
         @forelse ($brands as $brand)
             <tr>
             <td>{{$brand->name}}</td>
             <td>
-                <a href="{{route('brands.edit', $brand->id)}}" class="edit">Editar</a>
-                <a href="" class="delete">Excluir</a>
+                <a href="{{route('brands.edit', $brand->id)}}" class="edit btn">Editar</a>
+                <a href="{{route('brands.show', $brand->id)}}" class="delete btn">Visualizar</a>
             </td>
             </tr>
             @empty
@@ -56,8 +47,11 @@
                 </tr>
         @endforelse
     </table>
-
-    {{ $brands->links() }}
+    @if (isset($dataForm))
+        {{ $brands->appends($dataForm)->links() }}
+    @else
+        {{ $brands->links() }}
+    @endif
 
 </div>
 <!--Content Dinâmico-->

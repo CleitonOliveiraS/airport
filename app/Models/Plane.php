@@ -26,4 +26,11 @@ class Plane extends Model
     public function brand(){
         return $this->belongsTo(Brand::class);
     }
+
+    public function search($keySearch, $totalPage){
+        return $this->where('id', $keySearch)
+                    ->orWhere('wty_passengers', $keySearch)
+                    ->orWhere('class', 'LIKE', "%{$keySearch}%")
+                    ->paginate($totalPage);
+    }
 }

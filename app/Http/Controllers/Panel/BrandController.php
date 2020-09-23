@@ -33,7 +33,7 @@ class BrandController extends Controller
     public function create()
     {
         $title = 'Cadastrar Novo Avião';
-        return view('panel.brands.create', compact('title'));
+        return view('panel.brands.create_edit', compact('title'));
     }
 
     public function store(BrandStoreUpdateFormRequest $request)
@@ -78,8 +78,8 @@ class BrandController extends Controller
         if(!$brand){
             return redirect()->back();
         }
-        $title = "Editar Marca: {brand->name}";
-        return view('panel.brands.edit', compact('title', 'brand'));
+        $title = "Editar Marca: {$brand->name}";
+        return view('panel.brands.create_edit', compact('title', 'brand'));
     }
 
     /**

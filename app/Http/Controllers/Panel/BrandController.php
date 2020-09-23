@@ -115,7 +115,6 @@ class BrandController extends Controller
         }else{
             return redirect()->back()->with('error', 'Falha ao deletar!');
         }
-        
     }
 
     public function search(Request $request){
@@ -123,5 +122,11 @@ class BrandController extends Controller
         $brands = $this->brand->search($request->key_search, $this->totalPage);
         $title = "Brands, filtros para: {$request->key_search}";
         return view('panel.brands.index', compact('title', 'brands', 'dataForm'));
+    }
+
+    public function planes(Brand $brand){
+        $planes = $brand->planes()->get();
+        $title = "Aviões da marca: {$brand->name}";
+        return view('panel.brands.planes', compact('title', 'planes', 'brand'));
     }
 }

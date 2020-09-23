@@ -67,9 +67,14 @@ class PlaneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Plane $plane)
     {
-        //
+        if(!$plane){
+            return redirect()->back();
+        }
+        $brands = Brand::pluck('name', 'id');
+        $title = "Detalhes da Avião: {$plane->id}";
+        return view('panel.plane.show', compact('title', 'plane', 'brands'));
     }
 
     /**
@@ -78,9 +83,8 @@ class PlaneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Plane $plane)
     {
-        $plane = $this->plane->find($id);
         if(!$plane){
             return redirect()->back();
         }
@@ -119,9 +123,16 @@ class PlaneController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Plane $plane)
     {
-        
+        if(!$plane){
+            return redirect()->back();
+        }
+        if($plane->delete()){
+            return redirect()->route('planes.index')->with('success', 'Deletado com sucesso!');
+        }else{
+            return redirect()->back()->with('error', 'Falha ao deletar!');
+        }
     }
 
     public function search(Request $request)

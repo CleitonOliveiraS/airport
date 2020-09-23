@@ -6,7 +6,7 @@
     <a href="" class="bred">Visualizar</a>
 </div>
 <div class="title-pg">
-    <h1 class="title-pg">Visualizar Marca</h1>
+    <h1 class="title-pg">Visualizar Avião</h1>
 </div>
 
 <div class="content-din">
@@ -21,11 +21,20 @@
     @endif
     <ul>
         <li>
-            Nome: <strong>{{$brand->name}}</strong>
+            Id: <strong>{{$plane->id}}</strong>
+        </li>
+        <li>
+            Classe: <strong>{{$plane->class}}</strong>
+        </li>
+        <li>
+            Marca: <strong>{{$plane->brand->name}}</strong>
+        </li>
+        <li>
+            Total de Passageiros: <strong>{{$plane->wty_passengers}}</strong>
         </li>
     </ul>
 
-    {{ Form::open(['route' => ['brands.destroy', $brand], 'class' => 'form form-search form-ds', 'method' => 'DELETE']) }}
+    {{ Form::open(['route' => ['planes.destroy', $plane], 'class' => 'form form-search form-ds', 'method' => 'DELETE']) }}
     <div class="form-group">
         <button class="btn btn-danger">Deletar</button>
     </div>

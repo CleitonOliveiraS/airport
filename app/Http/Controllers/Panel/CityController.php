@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Models\State;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\City;
@@ -10,16 +11,24 @@ class CityController extends Controller
 {
     
     private $city;
+    private $state;
+    private $totalPage = 2;
 
     public function __construct(City $city)
     {
         $this->city = $city;
     }
 
-    public function index()
+    public function index($initials)
     {
-        $title = "Cidades";
-        return view('panel.cities.index', 'title');
+        $state = State::where('initials', $initials)->get()->first();
+        if (!$state){
+            return redirect()->back();
+        }
+
+        $cities = $state->cities()->paginate($this->totalPage);
+        $title = "Cidades do estado {$state->name}";
+        return view('panel.cities.index', compact('title', 'cities', 'state'));
     }
 
     /**
@@ -87,4 +96,22 @@ class CityController extends Controller
     {
         //
     }
+
+    public function search(Request $request, $initials)
+    {
+        $state = State::where('initials', $initials)->get()->first();
+        if (!$state){
+            return redirect()->back();
+        }
+
+        $dataForm = $request->all();
+        $keySearch = $request->key_search;
+        if(!$keySearch){
+            return redirect()->route('state.cities.index');
+        }
+        $cities = $state->searchCities($keySearch, $this->totalPage);
+        $title = "Filtro: Cidades do Estado: {$state->name}";
+        return view('panel.cities.index', compact('title', 'state','cities', 'dataForm'));
+    }
+
 }

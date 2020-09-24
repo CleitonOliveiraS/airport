@@ -8,8 +8,11 @@ Route::group(['prefix' => 'panel', 'namespace' => 'Panel'], function(){
     Route::any('planes/search', 'PlaneController@search')->name('planes.search');
     Route::resource('/planes', 'PlaneController');
     
-    Route::any('states', 'StateController@search')->name('states.search');
+    Route::post('states/search', 'StateController@search')->name('states.search');
     Route::get('states', 'StateController@index')->name('states.index');
+
+    Route::get('state/{initials}/cities/search', 'CityController@search')->name('state.cities.search');
+    Route::get('state/{initials}/cities', 'CityController@index')->name('state.cities');
 
     Route::get('/', 'PanelController@index')->name('panel');
 });

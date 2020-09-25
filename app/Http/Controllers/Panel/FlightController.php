@@ -44,22 +44,22 @@ class FlightController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $nameFile = '';
-        if ($request->hasFile('image') && $request->file('image')->isValid()){
-            $nameFile = uniqid(date('HisYmd')).'.'.$request->image->extension();;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $nameFile = uniqid(date('HisYmd')) . '.' . $request->image->extension();;
 
-            if(!$request->image->storeAs('flights', $nameFile)){
+            if (!$request->image->storeAs('flights', $nameFile)) {
                 return redirect()->back()->with('error', 'Falha ao fazer upload!')->withInput();
             }
         }
-        if($this->flight->newFlight($request, $nameFile)){
+        if ($this->flight->newFlight($request, $nameFile)) {
             return redirect()->route('flights.index')->with('success', 'Cadastro realizado com sucesso!');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Falha ao cadastrar!')->withInput();
         }
     }
@@ -67,12 +67,12 @@ class FlightController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show(Flight $flight)
     {
-        if(!$flight){
+        if (!$flight) {
             return redirect()->back();
         }
         $title = "Detalhes do voo {$flight->id}";
@@ -83,12 +83,12 @@ class FlightController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Flight $flight)
     {
-        if(!$flight){
+        if (!$flight) {
             return redirect()->back();
         }
         $planes = Plane::pluck('id', 'id');
@@ -100,34 +100,34 @@ class FlightController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Flight $flight)
     {
-        if(!$flight){
+        if (!$flight) {
             return redirect()->back();
         }
 
         $nameFile = $flight->image;
 
-        if ($request->hasFile('image') && $request->file('image')->isValid()){
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
 
-            if ($flight->image){
+            if ($flight->image) {
                 $nameFile = $flight->image;
-            }else{
-                $nameFile = uniqid(date('HisYmd')).'.'.$request->image->extension();;
+            } else {
+                $nameFile = uniqid(date('HisYmd')) . '.' . $request->image->extension();;
             }
 
-            if(!$request->image->storeAs('flights', $nameFile)){
+            if (!$request->image->storeAs('flights', $nameFile)) {
                 return redirect()->back()->with('error', 'Falha ao fazer upload!')->withInput();
             }
         }
 
-        if($flight->updateFlight($request, $nameFile)){
+        if ($flight->updateFlight($request, $nameFile)) {
             return redirect()->route('flights.index')->with('success', 'Sucesso ao atualizar!');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Falha ao atulizar!')->withInput();
         }
     }
@@ -135,22 +135,32 @@ class FlightController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Flight $flight)
     {
-        if(!$flight){
+        if (!$flight) {
             return redirect()->back();
         }
-        if($flight->delete()){
+        if ($flight->delete()) {
             return redirect()->route('flights.index')->with('success', 'Deletado com sucesso!');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Falha ao deletar!');
         }
     }
 
-    public function search(){
-
+    public function search(Request $request)
+    {
+        $flights = $this->flight->search($request, $this->totalPages);
+        $dataForm = $request->except(['_token', 'page']);
+//        dd($dataForm);
+//        if ($dataForm){
+//            if (!$dataForm['code'] && !$dataForm['date'] && !$dataForm['hour_output'] && !$dataForm['qty_stops']){
+//                $dataForm = null;
+//            }
+//        }
+        $title = 'Resultados dos voos pesquisado';
+        return view('panel.flights.index', compact('title', 'flights', 'dataForm'));
     }
 }

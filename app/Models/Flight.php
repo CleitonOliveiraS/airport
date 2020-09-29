@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flight extends Model
 {
+
+    protected $casts = [
+        'is_promotion' => 'boolean'
+    ];
+
     protected $fillable = [
         'plane_id',
         'airport_origin_id',
@@ -28,6 +33,7 @@ class Flight extends Model
     {
         $data = $request->all();
         $data['image'] = $nameFile;
+        $data['is_promotion'] = (!isset($data['is_promotion']))? 0 : 1;
         return $this->create($data);
     }
 
@@ -35,6 +41,7 @@ class Flight extends Model
     {
         $data = $request->all();
         $data['image'] = $nameFile;
+        $data['is_promotion'] = (!isset($data['is_promotion']))? 0 : 1;
         return $this->update($data);
     }
 

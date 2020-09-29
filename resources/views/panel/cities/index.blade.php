@@ -2,12 +2,13 @@
 @section('content')
     <div class="bred">
         <a href="{{ route('panel') }}" class="bred">Home ></a>
-        <a href="{{route('states.index')}}" class="bred">Estados  ></a>
-        <a href="{{route('state.cities', $state->initials)}}" class="bred">{{$state->name}}  ></a>
+        <a href="{{route('states.index')}}" class="bred">Estados ></a>
+        <a href="{{route('state.cities', $state->initials)}}" class="bred">{{$state->name}} ></a>
         <a href="" class="bred">Cidades</a>
     </div>
     <div class="title-pg">
-        <h1 class="title-pg">Cidades do Estado ({{$cities->count()}} - {{$cities->total()}}): <strong>{{$state->name}}</strong></h1>
+        <h1 class="title-pg">Cidades do Estado ({{$cities->count()}} - {{$cities->total()}}):
+            <strong>{{$state->name}}</strong></h1>
     </div>
     <div class="content-din bg-white">
 
@@ -33,7 +34,11 @@
                 <tr>
                     <td>{{ $city->name }}</td>
                     <td>
-                       #ações
+                        <a href="{{route('airports.index', $city)}}" class="edit btn">
+                            <i class="fa fa-thumb-tack" aria-hidden="true">
+                                Aeroportos
+                            </i>
+                        </a>
                     </td>
                 </tr>
             @empty

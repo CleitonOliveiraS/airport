@@ -1,8 +1,8 @@
 <div class="form-group">
-<div class="form-group">
     <label for="plane_id">Escolha o Avião</label>
     {{Form::select('plane_id', $planes, null, ['class' => 'form-control'])}}
 </div>
+<div class="form-group">
     <label for="origin">Aeroporto Origem</label>
     {{Form::select('airport_origin_id', $airports, null, ['class' => 'form-control', 'placeholder' => 'Escolha o Aeroporto de Origem'])}}
 </div>
